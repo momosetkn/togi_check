@@ -46,6 +46,32 @@ function App() {
 
   return (
     <div className="App">
+      <table>
+        <tr>
+          <td>orientationAlpha</td>
+          <td>{state.orientationAlpha}</td>
+        </tr>
+        <tr>
+          <td>orientationBeta</td>
+          <td>{state.orientationBeta}</td>
+        </tr>
+        <tr>
+          <td>orientationGamma</td>
+          <td>{state.orientationGamma}</td>
+        </tr>
+        <tr>
+          <td>motionX</td>
+          <td>{state.motionX}</td>
+        </tr>
+        <tr>
+          <td>motionY</td>
+          <td>{state.motionY}</td>
+        </tr>
+        <tr>
+          <td>motionZ</td>
+          <td>{state.motionZ}</td>
+        </tr>
+      </table>
       {JSON.stringify(state)}
     </div>
   );
