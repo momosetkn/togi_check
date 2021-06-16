@@ -28,6 +28,10 @@
   color: #61dafb;
 }
 
+.value-table td{
+  text-align:left;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

@@ -46,30 +46,30 @@ function App() {
 
   return (
     <div className="App">
-      <table>
+      <table className="value-table">
         <tr>
           <td>orientationAlpha</td>
-          <td>{state.orientationAlpha}</td>
+          <td>{state.orientationAlpha.toFixed(1)}</td>
         </tr>
         <tr>
           <td>orientationBeta</td>
-          <td>{state.orientationBeta}</td>
+          <td>{state.orientationBeta.toFixed(1)}</td>
         </tr>
         <tr>
           <td>orientationGamma</td>
-          <td>{state.orientationGamma}</td>
+          <td>{state.orientationGamma.toFixed(1)}</td>
         </tr>
         <tr>
           <td>motionX</td>
-          <td>{state.motionX}</td>
+          <td>{state.motionX.toFixed(1)}</td>
         </tr>
         <tr>
           <td>motionY</td>
-          <td>{state.motionY}</td>
+          <td>{state.motionY.toFixed(1)}</td>
         </tr>
         <tr>
           <td>motionZ</td>
-          <td>{state.motionZ}</td>
+          <td>{state.motionZ.toFixed(1)}</td>
         </tr>
       </table>
       {JSON.stringify(state)}
