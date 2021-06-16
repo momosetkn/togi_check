@@ -22,6 +22,7 @@ jobs:
           node-version: '14'
       - run: yarn install
       - run: yarn test
+      - run: yarn build
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
