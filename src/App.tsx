@@ -32,8 +32,8 @@ function App() {
         }));
     });
     window.addEventListener("devicemotion", (dat) => {
-      if (!dat.accelerationIncludingGravity) return;
-      const {x, y, z} = dat.accelerationIncludingGravity;
+      if (!dat.acceleration) return;
+      const {x, y, z} = dat.acceleration;
       update(prev => (
         {
           ...prev,
