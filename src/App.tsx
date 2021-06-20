@@ -49,7 +49,7 @@ function App() {
     <StyledMain>
       <StyledBackground left={state.orientationGamma > 0}/>
       <StyledIndicator>
-        <span>{state.orientationGamma.toFixed(1)}度</span>
+        <span>{Math.abs(state.orientationGamma).toFixed(1)}度</span>
       </StyledIndicator>
       <table className="value-table">
         <tr>
