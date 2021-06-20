@@ -74,7 +74,6 @@ function App() {
           <td>{state.motionZ.toFixed(1)}</td>
         </tr>
       </table>
-      {JSON.stringify(state)}
     </div>
   );
 }
