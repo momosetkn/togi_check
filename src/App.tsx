@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
+import styled from "styled-components";
 
 type State = {
   orientationAlpha: number,
@@ -45,7 +46,8 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
+    <div>
+      <StyledBackground left={state.orientationGamma > 0}/>
       <table className="value-table">
         <tr>
           <td>orientationAlpha</td>
@@ -76,5 +78,14 @@ function App() {
     </div>
   );
 }
+
+const StyledBackground = styled.div<{left: boolean}>`
+  height: 100vh;
+  width: 100vw;
+  z-index: -1;
+  position: absolute;
+  background-image: url("${process.env.PUBLIC_URL}/hocho.jpg");
+  transform: scale(${({left}) => left ? "1" : "-1"}, 1);
+`;
 
 export default App;
