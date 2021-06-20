@@ -46,8 +46,9 @@ function App() {
   }, []);
 
   return (
-    <div>
+    <StyledMain>
       <StyledBackground left={state.orientationGamma > 0}/>
+      <StyledIndicator>{state.orientationGamma}度</StyledIndicator>
       <table className="value-table">
         <tr>
           <td>orientationAlpha</td>
@@ -74,9 +75,14 @@ function App() {
           <td>{state.motionZ.toFixed(1)}</td>
         </tr>
       </table>
-    </div>
+    </StyledMain>
   );
 }
+
+const StyledMain = styled.div`
+  height: 100vh;
+  width: 100vw;  
+`;
 
 const StyledBackground = styled.div<{left: boolean}>`
   height: 100vh;
@@ -85,6 +91,16 @@ const StyledBackground = styled.div<{left: boolean}>`
   position: absolute;
   background-image: url("${process.env.PUBLIC_URL}/hocho.jpg");
   transform: scale(${({left}) => left ? "1" : "-1"}, 1);
+`;
+
+const StyledIndicator = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ffffff;
+  font-size: 10vw;
 `;
 
 export default App;
