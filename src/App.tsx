@@ -48,7 +48,9 @@ function App() {
   return (
     <StyledMain>
       <StyledBackground left={state.orientationGamma > 0}/>
-      <StyledIndicator>{state.orientationGamma.toFixed(1)}度</StyledIndicator>
+      <StyledIndicator>
+        <span>{state.orientationGamma.toFixed(1)}度</span>
+      </StyledIndicator>
       <table className="value-table">
         <tr>
           <td>orientationAlpha</td>
@@ -99,8 +101,11 @@ const StyledIndicator = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #ffffff;
-  font-size: 10vw;
+  span {
+    background: #000000c0;
+    color: #ffffff;
+    font-size: 10vw;
+  }
 `;
 
 export default App;
