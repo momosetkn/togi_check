@@ -48,7 +48,7 @@ function App() {
   return (
     <StyledMain>
       <StyledBackground left={state.orientationGamma > 0}/>
-      <StyledIndicator>{state.orientationGamma}度</StyledIndicator>
+      <StyledIndicator>{state.orientationGamma.toFixed(1)}度</StyledIndicator>
       <table className="value-table">
         <tr>
           <td>orientationAlpha</td>
