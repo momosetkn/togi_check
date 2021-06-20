@@ -102,7 +102,7 @@ const StyledIndicator = styled.div`
   justify-content: center;
   align-items: center;
   span {
-    background: #000000c0;
+    background: #00000090;
     color: #ffffff;
     font-size: 10vw;
   }
