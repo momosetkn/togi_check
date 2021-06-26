@@ -75,46 +75,35 @@ function App() {
         return {nowDistance, nowSpeed};
       };
 
-    const getDistance = ({
-       accelerationX,
-       accelerationY,
-       accelerationZ,
-       speedX,
-       speedY,
-       speedZ
-    }: {
-      accelerationX: number,
-      accelerationY: number,
-      accelerationZ: number,
-      speedX: number,
-      speedY: number,
-      speedZ: number
-    }) => {
+
       // 加速度が0だったら、距離も0（スピード計算が正確じゃないため、これを入れないと静止時にスピードが0にならない）
+    const { distance, distanceAndSpeedX, distanceAndSpeedY, distanceAndSpeedZ } = (() => {
       if (accelerationX === 0 && accelerationY === 0 && accelerationZ === 0) {
-        return 0;
+        const DISTANCE_AND_SPEED_ZERO = {nowDistance: 0, nowSpeed: 0}
+        return {
+          distance: 0,
+          distanceAndSpeedX: DISTANCE_AND_SPEED_ZERO,
+          distanceAndSpeedY: DISTANCE_AND_SPEED_ZERO,
+          distanceAndSpeedZ: DISTANCE_AND_SPEED_ZERO
+        };
       }
 
-      const xx = getNowDistanceAndSpeed({acceleration: accelerationX || 0, speed: speedX});
-      const yy = getNowDistanceAndSpeed({acceleration: accelerationY || 0, speed: speedY});
-      const zz = getNowDistanceAndSpeed({acceleration: accelerationZ || 0, speed: speedZ});
-      return Math.sqrt(Math.sqrt(xx.nowDistance ** 2 + yy.nowDistance ** 2) ** 2 + zz.nowDistance ** 2);
-    };
+      const distanceAndSpeedX = getNowDistanceAndSpeed({acceleration: accelerationX || 0, speed: speedX});
+      const distanceAndSpeedY = getNowDistanceAndSpeed({acceleration: accelerationY || 0, speed: speedY});
+      const distanceAndSpeedZ = getNowDistanceAndSpeed({acceleration: accelerationZ || 0, speed: speedZ});
+      const distance =  Math.sqrt(
+        Math.sqrt(distanceAndSpeedX.nowDistance ** 2 + distanceAndSpeedY.nowDistance ** 2) ** 2
+        + distanceAndSpeedZ.nowDistance ** 2
+      );
+      return { distance, distanceAndSpeedX, distanceAndSpeedY, distanceAndSpeedZ };
+    })();
 
-    const distance = getDistance({
-      accelerationX,
-      accelerationY,
-      accelerationZ,
-      speedX,
-      speedY,
-      speedZ
-    });
     update(prev => (
         {
           ...prev,
-          speedX: xx.nowSpeed,
-          speedY: yy.nowSpeed,
-          speedZ: zz.nowSpeed,
+          speedX: distanceAndSpeedX.nowSpeed,
+          speedY: distanceAndSpeedY.nowSpeed,
+          speedZ: distanceAndSpeedZ.nowSpeed,
           distance: prev.distance + distance,
         }));
     // eslint-disable-next-line
