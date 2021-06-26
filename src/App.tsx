@@ -137,19 +137,19 @@ function App() {
           <td>{state.orientationGamma.toFixed(1)}</td>
         </tr>
         <tr>
-          <td>motionX</td>
+          <td>accelerationX</td>
           <td>{state.accelerationX.toFixed(1)}</td>
         </tr>
         <tr>
-          <td>motionY</td>
+          <td>accelerationY</td>
           <td>{state.accelerationY.toFixed(1)}</td>
         </tr>
         <tr>
-          <td>motionZ</td>
+          <td>accelerationZ</td>
           <td>{state.accelerationZ.toFixed(1)}</td>
         </tr>
         <tr>
-          <td>x</td>
+          <td>measurementCount</td>
           <td>{state.measurementCount}</td>
         </tr>
         <tr>
@@ -166,7 +166,7 @@ function App() {
         </tr>
         <tr>
           <td>distance</td>
-          <td>{state.distance/1_000}</td>
+          <td>{(state.distance/1_000_000).toFixed(2)}</td>
         </tr>
       </table>
     </StyledMain>
