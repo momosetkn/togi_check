@@ -69,8 +69,9 @@ function App() {
       const { accelerationX, accelerationY, accelerationZ, speedX, speedY, speedZ, diffTime } = state;
 
       const extracted = ({acceleration, speed}:{acceleration: number, speed: number}) => {
-        const nowSpeed = (acceleration) * diffTime;
-        const nowDistance =  (nowSpeed + speed) * diffTime
+        const additionalSpeed = acceleration * diffTime;
+        const nowSpeed = additionalSpeed + speed
+        const nowDistance =  nowSpeed * diffTime
         return {nowDistance, nowSpeed};
       }
 
