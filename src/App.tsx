@@ -78,15 +78,15 @@ function App() {
 
       // 加速度が0だったら、距離も0（スピード計算が正確じゃないため、これを入れないと静止時にスピードが0にならない）
     const { distance, distanceAndSpeedX, distanceAndSpeedY, distanceAndSpeedZ } = (() => {
-      if (accelerationX === 0 && accelerationY === 0 && accelerationZ === 0) {
-        const DISTANCE_AND_SPEED_ZERO = {nowDistance: 0, nowSpeed: 0}
-        return {
-          distance: 0,
-          distanceAndSpeedX: DISTANCE_AND_SPEED_ZERO,
-          distanceAndSpeedY: DISTANCE_AND_SPEED_ZERO,
-          distanceAndSpeedZ: DISTANCE_AND_SPEED_ZERO
-        };
-      }
+      // if (accelerationX === 0 && accelerationY === 0 && accelerationZ === 0) {
+      //   const DISTANCE_AND_SPEED_ZERO = {nowDistance: 0, nowSpeed: 0}
+      //   return {
+      //     distance: 0,
+      //     distanceAndSpeedX: DISTANCE_AND_SPEED_ZERO,
+      //     distanceAndSpeedY: DISTANCE_AND_SPEED_ZERO,
+      //     distanceAndSpeedZ: DISTANCE_AND_SPEED_ZERO
+      //   };
+      // }
 
       const distanceAndSpeedX = getNowDistanceAndSpeed({acceleration: accelerationX || 0, speed: speedX});
       const distanceAndSpeedY = getNowDistanceAndSpeed({acceleration: accelerationY || 0, speed: speedY});
