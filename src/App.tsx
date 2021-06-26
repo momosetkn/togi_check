@@ -9,6 +9,7 @@ type State = {
   motionX: number,
   motionY: number,
   motionZ: number,
+  x: number,
 }
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
     motionX: 0,
     motionY: 0,
     motionZ: 0,
+    x: 0,
   });
 
   useEffect(() => {
@@ -41,6 +43,7 @@ function App() {
           motionX: x || 0,
           motionY: y || 0,
           motionZ: z || 0,
+          x: prev.x+1,
         }));
     });
   }, []);
@@ -75,6 +78,10 @@ function App() {
         <tr>
           <td>motionZ</td>
           <td>{state.motionZ.toFixed(1)}</td>
+        </tr>
+        <tr>
+          <td>x</td>
+          <td>{state.x}</td>
         </tr>
       </table>
     </StyledMain>
