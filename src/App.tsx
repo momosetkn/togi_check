@@ -84,7 +84,7 @@ function App() {
           speedX: xx.nowSpeed,
           speedY: yy.nowSpeed,
           speedZ: zz.nowSpeed,
-          distance: distance,
+          distance: prev.distance + distance,
         }));
     // eslint-disable-next-line
   }, [
