@@ -6,15 +6,16 @@ type State = {
   orientationAlpha: number,
   orientationBeta: number,
   orientationGamma: number,
-  motionX: number,
-  motionY: number,
-  motionZ: number,
-  x: number,
+  accelerationX: number,
+  accelerationY: number,
+  accelerationZ: number,
+  measurementCount: number,// TODO: 要らない
   speedX: number,
   speedY: number,
   speedZ: number,
   distance: number,
   measurementTime: number,
+  diffTime: number,
 }
 
 function App() {
@@ -22,15 +23,16 @@ function App() {
     orientationAlpha: 0,
     orientationBeta: 0,
     orientationGamma: 0,
-    motionX: 0,
-    motionY: 0,
-    motionZ: 0,
-    x: 0,
+    accelerationX: 0,
+    accelerationY: 0,
+    accelerationZ: 0,
+    measurementCount: 0,
     speedX: 0,
     speedY: 0,
     speedZ: 0,
     distance: 0,
     measurementTime: new Date().getTime(),
+    diffTime: 0,
   });
 
   useEffect(() => {
@@ -46,12 +48,25 @@ function App() {
     });
     window.addEventListener("devicemotion", (dat) => {
       if (!dat.acceleration) return;
-      const {x, y, z} = dat.acceleration;
+      const { x, y, z } = dat.acceleration;
 
-      const { measurementTime, speedX, speedY, speedZ } = state;
       const nowMeasurementTime = new Date().getTime();
 
-      const diffTime = nowMeasurementTime - measurementTime;
+      update(prev => (
+        {
+          ...prev,
+          accelerationX: x || 0,
+          accelerationY: y || 0,
+          accelerationZ: z || 0,
+          measurementCount: prev.measurementCount+1,
+          measurementTime: nowMeasurementTime,
+          diffTime: nowMeasurementTime - prev.measurementTime,
+        }));
+    });
+  }, []);
+
+  useEffect(() => {
+      const { accelerationX, accelerationY, accelerationZ, speedX, speedY, speedZ, diffTime } = state;
 
       const extracted = ({acceleration, speed}:{acceleration: number, speed: number}) => {
         const nowSpeed = (acceleration) * diffTime;
@@ -59,28 +74,27 @@ function App() {
         return {nowDistance, nowSpeed};
       }
 
-      const xx = extracted({acceleration: x || 0, speed: speedX});
-      const yy = extracted({acceleration: y || 0, speed: speedY});
-      const zz = extracted({acceleration: z || 0, speed: speedZ});
-      // const calcDistance = (a: number, b: number, c: number) => Math.sqrt(Math.sqrt(a**2 + b**2)**2 + c**2);
-      // distance(distanceX, distanceY, distanceZ);
-      // x*(diffTime**2)
+      const xx = extracted({acceleration: accelerationX || 0, speed: speedX});
+      const yy = extracted({acceleration: accelerationY || 0, speed: speedY});
+      const zz = extracted({acceleration: accelerationZ || 0, speed: speedZ});
       const distance = Math.sqrt(Math.sqrt(xx.nowDistance**2 + yy.nowDistance**2)**2 + zz.nowDistance**2);
       update(prev => (
         {
           ...prev,
-          motionX: x || 0,
-          motionY: y || 0,
-          motionZ: z || 0,
-          x: prev.x+1,
           speedX: xx.nowSpeed,
           speedY: yy.nowSpeed,
           speedZ: zz.nowSpeed,
           distance: distance,
-          measurementTime: nowMeasurementTime,
         }));
-    });
-  }, []);
+  }, [
+    state.accelerationX,
+    state.accelerationY,
+    state.accelerationZ,
+    state.speedX,
+    state.speedY,
+    state.speedZ,
+    state.diffTime,
+  ]);
 
   return (
     <StyledMain>
@@ -103,19 +117,19 @@ function App() {
         </tr>
         <tr>
           <td>motionX</td>
-          <td>{state.motionX.toFixed(1)}</td>
+          <td>{state.accelerationX.toFixed(1)}</td>
         </tr>
         <tr>
           <td>motionY</td>
-          <td>{state.motionY.toFixed(1)}</td>
+          <td>{state.accelerationY.toFixed(1)}</td>
         </tr>
         <tr>
           <td>motionZ</td>
-          <td>{state.motionZ.toFixed(1)}</td>
+          <td>{state.accelerationZ.toFixed(1)}</td>
         </tr>
         <tr>
           <td>x</td>
-          <td>{state.x}</td>
+          <td>{state.measurementCount}</td>
         </tr>
         <tr>
           <td>speedX</td>
