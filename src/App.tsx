@@ -68,18 +68,48 @@ function App() {
   useEffect(() => {
       const { accelerationX, accelerationY, accelerationZ, speedX, speedY, speedZ, diffTime } = state;
 
-      const extracted = ({acceleration, speed}:{acceleration: number, speed: number}) => {
+      const getNowDistanceAndSpeed = ({acceleration, speed}:{acceleration: number, speed: number}) => {
         const additionalSpeed = acceleration * diffTime;
         const nowSpeed = additionalSpeed + speed
         const nowDistance =  nowSpeed * diffTime
         return {nowDistance, nowSpeed};
+      };
+
+    const getDistance = ({
+       accelerationX,
+       accelerationY,
+       accelerationZ,
+       speedX,
+       speedY,
+       speedZ
+    }: {
+      accelerationX: number,
+      accelerationY: number,
+      accelerationZ: number,
+      speedX: number,
+      speedY: number,
+      speedZ: number
+    }) => {
+      // 加速度が0だったら、距離も0（スピード計算が正確じゃないため、これを入れないと静止時にスピードが0にならない）
+      if (accelerationX === 0 && accelerationY === 0 && accelerationZ === 0) {
+        return 0;
       }
 
-      const xx = extracted({acceleration: accelerationX || 0, speed: speedX});
-      const yy = extracted({acceleration: accelerationY || 0, speed: speedY});
-      const zz = extracted({acceleration: accelerationZ || 0, speed: speedZ});
-      const distance = Math.sqrt(Math.sqrt(xx.nowDistance**2 + yy.nowDistance**2)**2 + zz.nowDistance**2);
-      update(prev => (
+      const xx = getNowDistanceAndSpeed({acceleration: accelerationX || 0, speed: speedX});
+      const yy = getNowDistanceAndSpeed({acceleration: accelerationY || 0, speed: speedY});
+      const zz = getNowDistanceAndSpeed({acceleration: accelerationZ || 0, speed: speedZ});
+      return Math.sqrt(Math.sqrt(xx.nowDistance ** 2 + yy.nowDistance ** 2) ** 2 + zz.nowDistance ** 2);
+    };
+
+    const distance = getDistance({
+      accelerationX,
+      accelerationY,
+      accelerationZ,
+      speedX,
+      speedY,
+      speedZ
+    });
+    update(prev => (
         {
           ...prev,
           speedX: xx.nowSpeed,
@@ -147,7 +177,7 @@ function App() {
         </tr>
         <tr>
           <td>distance</td>
-          <td>{state.distance}</td>
+          <td>{state.distance/1_000}</td>
         </tr>
       </table>
     </StyledMain>
