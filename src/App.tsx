@@ -86,6 +86,7 @@ function App() {
           speedZ: zz.nowSpeed,
           distance: distance,
         }));
+    // eslint-disable-next-line
   }, [
     state.accelerationX,
     state.accelerationY,
