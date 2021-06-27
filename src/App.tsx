@@ -71,7 +71,7 @@ function App() {
       const getNowDistanceAndSpeed = ({acceleration, speed}:{acceleration: number, speed: number}) => {
         const additionalSpeed = acceleration * diffTime;
         let nowSpeed = additionalSpeed + speed
-        const correctionRatio = additionalSpeed === 0 ? 999/1_000 : 1
+        const correctionRatio = additionalSpeed === 0 ? 950/1_000 : 1
         nowSpeed = nowSpeed * correctionRatio;
         const nowDistance =  nowSpeed * diffTime
         return {nowDistance, nowSpeed};
