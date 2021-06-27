@@ -73,6 +73,7 @@ function App() {
         let nowSpeed = additionalSpeed + speed
         const correctionRatio = additionalSpeed === 0 ? 950/1_000 : 1
         nowSpeed = nowSpeed * correctionRatio;
+        nowSpeed = nowSpeed < 0.0001 ? 0 : nowSpeed
         const nowDistance =  nowSpeed * diffTime
         return {nowDistance, nowSpeed};
       };
