@@ -71,8 +71,8 @@ function App() {
       const getNowDistanceAndSpeed = ({acceleration, speed}:{acceleration: number, speed: number}) => {
         const additionalSpeed = acceleration * diffTime;
         let nowSpeed = additionalSpeed + speed
-        // 加速度が0になったとしても、ゆっくりスピード値が減少するようにする
-        const correctionRatio = additionalSpeed === 0 ? 990/1_000 : 1
+        // 加速度が0になったとしても、スピード値が0にならない事象の対処（どうしても計算が合わなくなる）
+        const correctionRatio = additionalSpeed === 0 ? 980/1_000 : 1
         nowSpeed = nowSpeed * correctionRatio;
         // スピード値が無視できるぐらい小さな値になったら、いっそのこと0にする
         nowSpeed = nowSpeed < 0.0001 ? 0 : nowSpeed
