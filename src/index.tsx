@@ -8,9 +8,11 @@ import { NotFoundPage } from "./NotFoundPage";
 import reportWebVitals from './reportWebVitals';
 import { StartPage } from "./StartPage";
 
+const ROUTER_BASENAME = '/togi_check';
+
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename={ROUTER_BASENAME}>
       <Switch>
         <Route exact path="/">
           <StartPage />
