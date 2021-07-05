@@ -18,7 +18,7 @@ type State = {
   diffTime: number,
 }
 
-function App() {
+export const TrainingPage = () => {
   const [state, update] = useState<State>({
     orientationAlpha: 0,
     orientationBeta: 0,
@@ -206,5 +206,3 @@ const StyledIndicator = styled.div`
     font-size: 10vw;
   }
 `;
-
-export default App;
