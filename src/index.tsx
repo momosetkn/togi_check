@@ -4,19 +4,25 @@ import './index.css';
 import { TrainingPage } from './TrainingPage';
 import { AnglePage } from "./AnglePage";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { NotFoundPage } from "./NotFoundPage";
 import reportWebVitals from './reportWebVitals';
-
-const ROUTER_BASENAME = '/togi_check';
+import { StartPage } from "./StartPage";
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter basename={ROUTER_BASENAME}>
+    <BrowserRouter>
       <Switch>
+        <Route exact path="/">
+          <StartPage />
+        </Route>
         <Route path="/angle">
           <AnglePage />
         </Route>
         <Route path="/training">
           <TrainingPage />
+        </Route>
+        <Route>
+          <NotFoundPage />
         </Route>
       </Switch>
     </BrowserRouter>
