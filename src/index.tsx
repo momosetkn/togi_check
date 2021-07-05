@@ -3,18 +3,22 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import { TrainingPage } from './TrainingPage';
 import { AnglePage } from "./AnglePage";
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 import reportWebVitals from './reportWebVitals';
+
+const ROUTER_BASENAME = '/togi_check';
 
 ReactDOM.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Route path="/angle">
-        <AnglePage />
-      </Route>
-      <Route path="/training">
-        <TrainingPage />
-      </Route>
+    <BrowserRouter basename={ROUTER_BASENAME}>
+      <Switch>
+        <Route path="/angle">
+          <AnglePage />
+        </Route>
+        <Route path="/training">
+          <TrainingPage />
+        </Route>
+      </Switch>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
