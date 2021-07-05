@@ -2,21 +2,6 @@
 import './App.css';
 import styled from "styled-components";
 
-type State = {
-  orientationAlpha: number,
-  orientationBeta: number,
-  orientationGamma: number,
-  accelerationX: number,
-  accelerationY: number,
-  accelerationZ: number,
-  speedX: number,
-  speedY: number,
-  speedZ: number,
-  distance: number,
-  measurementTime: number,
-  diffTime: number,
-}
-
 export const AnglePage = () => {
   const [orientationGamma, setOrientationGamma] = useState<number>(0);
 
