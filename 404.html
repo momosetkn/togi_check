@@ -6,7 +6,7 @@
     <script type="text/javascript">
         const loc = window.location;
         // https://momosetkn.github.io/togi_check/example => /example
-        localStorage.setItem('start_path', loc.href.replace(/[a-zA-Z]+:\/\/[^\/]+\/[^\/]+\/(.*)/, '$1'));
+        localStorage.setItem('start_path', loc.href.replace(/[a-zA-Z]+:\/\/[^\/]+\/[^\/]+(.*)/, '$1'));
         // /togi_check/example1/example2 => /togi_check, / => /
         loc.replace(loc.pathname.replace(/(\/[^\/]+).*/, '$1'));
     </script>
