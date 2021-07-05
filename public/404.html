@@ -6,7 +6,7 @@
     <script type="text/javascript">
         const loc = window.location;
         localStorage.setItem('start_path', loc.href.replace(loc.origin, ''));
-        loc.replace("%PUBLIC_URL%");
+        loc.replace(loc.pathname.replace(/(\/[^\/]+).*/, '$1'));
     </script>
 </head>
 <body>
