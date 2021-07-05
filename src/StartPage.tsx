@@ -10,6 +10,7 @@ export const StartPage = () => {
     if(!startPath) return;
 
     history.push(startPath);
+    // eslint-disable-next-line
   }, []);
 
   return (
