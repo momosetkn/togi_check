@@ -9,10 +9,10 @@ import reportWebVitals from './reportWebVitals';
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <Route exact path="/angle">
+      <Route path="/angle">
         <AnglePage />
       </Route>
-      <Route exact path="/training">
+      <Route path="/training">
         <TrainingPage />
       </Route>
     </BrowserRouter>
