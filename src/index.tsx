@@ -7,6 +7,7 @@ import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { NotFoundPage } from "./NotFoundPage";
 import reportWebVitals from './reportWebVitals';
 import { StartPage } from "./StartPage";
+import { Graph } from "./Graph";
 
 const ROUTER_BASENAME = '/togi_check';
 
@@ -22,6 +23,9 @@ ReactDOM.render(
         </Route>
         <Route path="/training">
           <TrainingPage />
+        </Route>
+        <Route path="/graph">
+          <Graph data={[1,2,3,2,3]} length={5} />
         </Route>
         <Route>
           <NotFoundPage />
