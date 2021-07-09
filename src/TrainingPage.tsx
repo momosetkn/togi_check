@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import styled from "styled-components";
 
-type State = {
+type MeasurementValue = {
   orientationAlpha: number,
   orientationBeta: number,
   orientationGamma: number,
@@ -10,16 +10,19 @@ type State = {
   accelerationY: number,
   accelerationZ: number,
   measurementCount: number,// TODO: 要らない
-  speedX: number,
-  speedY: number,
-  speedZ: number,
-  distance: number,
   measurementTime: number,
   diffTime: number,
 }
 
+type CalculateValue = {
+  speedX: number,
+  speedY: number,
+  speedZ: number,
+  distance: number,
+}
+
 export const TrainingPage = () => {
-  const [state, update] = useState<State>({
+  const [measurementValue, setMeasurementValue] = useState<MeasurementValue>({
     orientationAlpha: 0,
     orientationBeta: 0,
     orientationGamma: 0,
@@ -27,18 +30,21 @@ export const TrainingPage = () => {
     accelerationY: 0,
     accelerationZ: 0,
     measurementCount: 0,
+    measurementTime: new Date().getTime(),
+    diffTime: 0,
+  });
+
+  const [calculateValue, setCalculateValue] = useState<CalculateValue>({
     speedX: 0,
     speedY: 0,
     speedZ: 0,
     distance: 0,
-    measurementTime: new Date().getTime(),
-    diffTime: 0,
   });
 
   useEffect(() => {
     window.addEventListener("deviceorientation", (dat) => {
       const {alpha, beta, gamma} = dat;
-      update(prev => (
+      setMeasurementValue(prev => (
         {
           ...prev,
           orientationAlpha: alpha || 0,
@@ -52,7 +58,7 @@ export const TrainingPage = () => {
 
       const nowMeasurementTime = new Date().getTime();
 
-      update(prev => (
+      setMeasurementValue(prev => (
         {
           ...prev,
           accelerationX: x || 0,
@@ -66,7 +72,8 @@ export const TrainingPage = () => {
   }, []);
 
   useEffect(() => {
-      const { accelerationX, accelerationY, accelerationZ, speedX, speedY, speedZ, diffTime } = state;
+      const { accelerationX, accelerationY, accelerationZ, diffTime } = measurementValue;
+      const { speedX, speedY, speedZ } = calculateValue;
 
       const getNowDistanceAndSpeed = ({acceleration, speed}:{acceleration: number, speed: number}) => {
         const additionalSpeed = acceleration * diffTime;
@@ -105,7 +112,7 @@ export const TrainingPage = () => {
       return { distance, distanceAndSpeedX, distanceAndSpeedY, distanceAndSpeedZ };
     })();
 
-    update(prev => (
+    setCalculateValue(prev => (
         {
           ...prev,
           speedX: distanceAndSpeedX.nowSpeed,
@@ -115,65 +122,64 @@ export const TrainingPage = () => {
         }));
     // eslint-disable-next-line
   }, [
-    state.accelerationX,
-    state.accelerationY,
-    state.accelerationZ,
-    state.speedX,
-    state.speedY,
-    state.speedZ,
-    state.diffTime,
+    measurementValue.accelerationX,
+    measurementValue.accelerationY,
+    measurementValue.accelerationZ,
+    measurementValue.diffTime,
+    calculateValue.speedX,
+    calculateValue.speedY,
+    calculateValue.speedZ,
   ]);
 
   return (
     <StyledMain>
-      <StyledBackground left={state.orientationGamma > 0}/>
-      <StyledIndicator>
-        <span>{Math.abs(state.orientationGamma).toFixed(1)}度</span>
-      </StyledIndicator>
+      <StyledAngleIndicator>
+        <span>{Math.abs(measurementValue.orientationGamma).toFixed(1)}度</span>
+      </StyledAngleIndicator>
       <table className="value-table">
         <tr>
           <td>orientationAlpha</td>
-          <td>{state.orientationAlpha.toFixed(1)}</td>
+          <td>{measurementValue.orientationAlpha.toFixed(1)}</td>
         </tr>
         <tr>
           <td>orientationBeta</td>
-          <td>{state.orientationBeta.toFixed(1)}</td>
+          <td>{measurementValue.orientationBeta.toFixed(1)}</td>
         </tr>
         <tr>
           <td>orientationGamma</td>
-          <td>{state.orientationGamma.toFixed(1)}</td>
+          <td>{measurementValue.orientationGamma.toFixed(1)}</td>
         </tr>
         <tr>
           <td>accelerationX</td>
-          <td>{state.accelerationX.toFixed(1)}</td>
+          <td>{measurementValue.accelerationX.toFixed(1)}</td>
         </tr>
         <tr>
           <td>accelerationY</td>
-          <td>{state.accelerationY.toFixed(1)}</td>
+          <td>{measurementValue.accelerationY.toFixed(1)}</td>
         </tr>
         <tr>
           <td>accelerationZ</td>
-          <td>{state.accelerationZ.toFixed(1)}</td>
+          <td>{measurementValue.accelerationZ.toFixed(1)}</td>
         </tr>
         <tr>
           <td>measurementCount</td>
-          <td>{state.measurementCount}</td>
+          <td>{measurementValue.measurementCount}</td>
         </tr>
         <tr>
           <td>speedX</td>
-          <td>{state.speedX}</td>
+          <td>{calculateValue.speedX}</td>
         </tr>
         <tr>
           <td>speedY</td>
-          <td>{state.speedY}</td>
+          <td>{calculateValue.speedY}</td>
         </tr>
         <tr>
           <td>speedZ</td>
-          <td>{state.speedZ}</td>
+          <td>{calculateValue.speedZ}</td>
         </tr>
         <tr>
           <td>distance</td>
-          <td>{(state.distance/1_000_000).toFixed(2)}</td>
+          <td>{(calculateValue.distance/1_000_000).toFixed(2)}</td>
         </tr>
       </table>
     </StyledMain>
@@ -185,16 +191,7 @@ const StyledMain = styled.div`
   width: 100vw;  
 `;
 
-const StyledBackground = styled.div<{left: boolean}>`
-  height: 100vh;
-  width: 100vw;
-  z-index: -1;
-  position: absolute;
-  background-image: url("${process.env.PUBLIC_URL}/hocho.jpg");
-  transform: scale(${({left}) => left ? "1" : "-1"}, 1);
-`;
-
-const StyledIndicator = styled.div`
+const StyledAngleIndicator = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
