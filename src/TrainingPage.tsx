@@ -19,6 +19,7 @@ type CalculateValue = {
   speedY: number,
   speedZ: number,
   distance: number,
+  plottingDistance: number,
 }
 
 export const TrainingPage = () => {
@@ -39,6 +40,7 @@ export const TrainingPage = () => {
     speedY: 0,
     speedZ: 0,
     distance: 0,
+    plottingDistance: 0,
   });
 
   useEffect(() => {
@@ -91,7 +93,7 @@ export const TrainingPage = () => {
 
 
       // 加速度が0だったら、距離も0（スピード計算が正確じゃないため、これを入れないと静止時にスピードが0にならない）
-    const { distance, distanceAndSpeedX, distanceAndSpeedY, distanceAndSpeedZ } = (() => {
+    const { additionalDistance, nowSpeedX, nowSpeedY, nowSpeedZ } = (() => {
       // if (accelerationX === 0 && accelerationY === 0 && accelerationZ === 0) {
       //   const DISTANCE_AND_SPEED_ZERO = {nowDistance: 0, nowSpeed: 0}
       //   return {
@@ -105,20 +107,20 @@ export const TrainingPage = () => {
       const distanceAndSpeedX = getNowDistanceAndSpeed({acceleration: accelerationX || 0, speed: speedX});
       const distanceAndSpeedY = getNowDistanceAndSpeed({acceleration: accelerationY || 0, speed: speedY});
       const distanceAndSpeedZ = getNowDistanceAndSpeed({acceleration: accelerationZ || 0, speed: speedZ});
-      const distance =  Math.sqrt(
+      const additionalDistance =  Math.sqrt(
         Math.sqrt(distanceAndSpeedX.nowDistance ** 2 + distanceAndSpeedY.nowDistance ** 2) ** 2
         + distanceAndSpeedZ.nowDistance ** 2
       );
-      return { distance, distanceAndSpeedX, distanceAndSpeedY, distanceAndSpeedZ };
+      return { additionalDistance, nowSpeedX: distanceAndSpeedX.nowSpeed, nowSpeedY: distanceAndSpeedY.nowSpeed, nowSpeedZ: distanceAndSpeedZ.nowSpeed };
     })();
 
     setCalculateValue(prev => (
         {
           ...prev,
-          speedX: distanceAndSpeedX.nowSpeed,
-          speedY: distanceAndSpeedY.nowSpeed,
-          speedZ: distanceAndSpeedZ.nowSpeed,
-          distance: prev.distance + distance,
+          speedX: nowSpeedX,
+          speedY: nowSpeedY,
+          speedZ: nowSpeedZ,
+          distance: prev.distance + additionalDistance,
         }));
     // eslint-disable-next-line
   }, [
@@ -130,6 +132,7 @@ export const TrainingPage = () => {
     calculateValue.speedY,
     calculateValue.speedZ,
   ]);
+
 
   return (
     <StyledMain>
@@ -185,6 +188,8 @@ export const TrainingPage = () => {
     </StyledMain>
   );
 }
+
+const step = 1_000;
 
 const StyledMain = styled.div`
   height: 100vh;
