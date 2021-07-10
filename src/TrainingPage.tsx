@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import styled from "styled-components";
-import {Graph} from "./Graph";
 
 type MeasurementValue = {
   orientationAlpha: number,
@@ -22,11 +21,6 @@ type CalculateValue = {
   distance: number,
 }
 
-type GraphValue = {
-  plottingDistance: number,
-  data: number[],
-}
-
 export const TrainingPage = () => {
   const [measurementValue, setMeasurementValue] = useState<MeasurementValue>({
     orientationAlpha: 0,
@@ -45,11 +39,6 @@ export const TrainingPage = () => {
     speedY: 0,
     speedZ: 0,
     distance: 0,
-  });
-
-  const [graph, setGraph] = useState<GraphValue>({
-    plottingDistance: 0,
-    data: []
   });
 
   useEffect(() => {
@@ -100,7 +89,6 @@ export const TrainingPage = () => {
         return {nowDistance, nowSpeed};
       };
 
-
       // 加速度が0だったら、距離も0（スピード計算が正確じゃないため、これを入れないと静止時にスピードが0にならない）
     const { additionalDistance, nowSpeedX, nowSpeedY, nowSpeedZ } = (() => {
       // if (accelerationX === 0 && accelerationY === 0 && accelerationZ === 0) {
@@ -142,21 +130,8 @@ export const TrainingPage = () => {
     calculateValue.speedZ,
   ]);
 
-  useEffect(() => {
-    if (calculateValue.distance - graph.plottingDistance >= step) {
-
-      setGraph(prev => ({
-        ...prev,
-        plottingDistance: calculateValue.distance,
-        data: prev.data.length > graphLength ? [] : [...prev.data, measurementValue.orientationGamma],
-      }));
-    }
-    // eslint-disable-next-line
-  }, [calculateValue.distance, measurementValue.orientationGamma]);
-
   return (
     <StyledMain>
-      <Graph data={graph.data} length={1000} />
       <StyledAngleIndicator>
         <span>{Math.abs(measurementValue.orientationGamma).toFixed(1)}度</span>
       </StyledAngleIndicator>
@@ -209,9 +184,6 @@ export const TrainingPage = () => {
     </StyledMain>
   );
 }
-
-const step = 1_000_000_000;
-const graphLength = 1_000;
 
 const StyledMain = styled.div`
   height: 100vh;
