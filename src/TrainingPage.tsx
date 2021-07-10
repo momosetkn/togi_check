@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import styled from "styled-components";
+import {Graph} from "./Graph";
 
 type MeasurementValue = {
   orientationAlpha: number,
@@ -19,7 +20,11 @@ type CalculateValue = {
   speedY: number,
   speedZ: number,
   distance: number,
+}
+
+type GraphValue = {
   plottingDistance: number,
+  data: number[],
 }
 
 export const TrainingPage = () => {
@@ -40,7 +45,11 @@ export const TrainingPage = () => {
     speedY: 0,
     speedZ: 0,
     distance: 0,
+  });
+
+  const [graph, setGraph] = useState<GraphValue>({
     plottingDistance: 0,
+    data: []
   });
 
   useEffect(() => {
@@ -133,9 +142,21 @@ export const TrainingPage = () => {
     calculateValue.speedZ,
   ]);
 
+  useEffect(() => {
+    if (calculateValue.distance - graph.plottingDistance >= step) {
+
+      setGraph(prev => ({
+        ...prev,
+        plottingDistance: calculateValue.distance,
+        data: prev.data.length > graphLength ? [] : [...prev.data, measurementValue.orientationGamma],
+      }));
+    }
+    // eslint-disable-next-line
+  }, [calculateValue.distance, measurementValue.orientationGamma]);
 
   return (
     <StyledMain>
+      <Graph data={graph.data} length={1000} />
       <StyledAngleIndicator>
         <span>{Math.abs(measurementValue.orientationGamma).toFixed(1)}度</span>
       </StyledAngleIndicator>
@@ -190,6 +211,7 @@ export const TrainingPage = () => {
 }
 
 const step = 1_000;
+const graphLength = 1_000;
 
 const StyledMain = styled.div`
   height: 100vh;
