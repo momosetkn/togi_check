@@ -210,7 +210,7 @@ export const TrainingPage = () => {
   );
 }
 
-const step = 1_000;
+const step = 1_000_000_000;
 const graphLength = 1_000;
 
 const StyledMain = styled.div`
