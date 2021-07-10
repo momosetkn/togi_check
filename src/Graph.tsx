@@ -3,12 +3,12 @@ import { Line, Serie } from '@nivo/line'
 export const Graph = ({data, length, dataTitle}: { data: number[], length: number, dataTitle?: string }) => {
   const nivoData: Serie[] = [
     {
-      "id": dataTitle || 'データ',
-      "color": "hsl(32, 70%, 50%)",
-      "data": [...Array(length)].map((_, i) => (
+      id: dataTitle || 'データ',
+      color: "hsl(32, 70%, 50%)",
+      data: [...Array(length)].map((_, i) => (
         {
-          "x": `${i}`,
-          "y": data[i]
+          x: `${i}`,
+          y: data[i] || 0
         }
       ))
     }
