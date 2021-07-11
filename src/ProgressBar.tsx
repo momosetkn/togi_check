@@ -26,7 +26,7 @@ const StyledAllProgress = styled.div`
 `;
 
 const StyledProgress = styled.div<{ratio: number}>`
-  width: ${({ratio}) => ratio * 100}%; 
+  width: ${({ratio}) => ratio}%; 
   height: 100%;
   animation-delay: 250ms;
   background-color: #007bff;
