@@ -126,10 +126,9 @@ export const TrainingPage = () => {
     measurementValue.accelerationY,
     measurementValue.accelerationZ,
     measurementValue.diffTime,
-    calculateValue.speedX,
-    calculateValue.speedY,
-    calculateValue.speedZ,
   ]);
+
+  const now = Math.min(calculateValue.distance/500_000_000, 100);
 
   return (
     <StyledMain>
@@ -137,7 +136,7 @@ export const TrainingPage = () => {
         <span>{Math.abs(measurementValue.orientationGamma).toFixed(1)}度</span>
       </StyledAngleIndicator>
       <StyledProgressBarContainer>
-        <ProgressBar now={Math.min(calculateValue.distance/1_000_000_000, 100)} />
+        <ProgressBar now={now} />
       </StyledProgressBarContainer>
       <table className="value-table">
         <tr>
@@ -183,6 +182,10 @@ export const TrainingPage = () => {
         <tr>
           <td>distance</td>
           <td>{(calculateValue.distance/1_000_000).toFixed(2)}</td>
+        </tr>
+        <tr>
+          <td>now</td>
+          <td>{now}</td>
         </tr>
       </table>
     </StyledMain>
