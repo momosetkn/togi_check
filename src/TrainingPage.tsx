@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import styled from "styled-components";
+import { ProgressBar } from "./ProgressBar";
 
 type MeasurementValue = {
   orientationAlpha: number,
@@ -135,6 +136,9 @@ export const TrainingPage = () => {
       <StyledAngleIndicator>
         <span>{Math.abs(measurementValue.orientationGamma).toFixed(1)}度</span>
       </StyledAngleIndicator>
+      <StyledProgressBarContainer>
+        <ProgressBar now={calculateValue.distance/1_000_000} />
+      </StyledProgressBarContainer>
       <table className="value-table">
         <tr>
           <td>orientationAlpha</td>
@@ -201,4 +205,8 @@ const StyledAngleIndicator = styled.div`
     color: #ffffff;
     font-size: 10vw;
   }
+`;
+
+const StyledProgressBarContainer = styled.div`
+  padding: 0 32px;
 `;
