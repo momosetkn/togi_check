@@ -137,7 +137,7 @@ export const TrainingPage = () => {
         <span>{Math.abs(measurementValue.orientationGamma).toFixed(1)}度</span>
       </StyledAngleIndicator>
       <StyledProgressBarContainer>
-        <ProgressBar now={calculateValue.distance/1_000_000} />
+        <ProgressBar now={Math.min(calculateValue.distance/1_000_000_000, 100)} />
       </StyledProgressBarContainer>
       <table className="value-table">
         <tr>
