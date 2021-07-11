@@ -130,6 +130,12 @@ export const TrainingPage = () => {
 
   const now = Math.min(calculateValue.distance/500_000_000, 100);
 
+  useEffect(() => {
+    if(now === 100){
+      navigator.vibrate(200);
+    }
+  }, [now])
+
   return (
     <StyledMain>
       <StyledAngleIndicator>
