@@ -128,7 +128,7 @@ export const TrainingPage = () => {
     measurementValue.diffTime,
   ]);
 
-  const now = Math.min(calculateValue.distance/5, 100);
+  const now = Math.min(calculateValue.distance/1_000_000, 100);
 
   useEffect(() => {
     if(now === 100){
