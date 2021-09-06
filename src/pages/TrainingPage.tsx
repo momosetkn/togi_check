@@ -4,6 +4,9 @@ import { ProgressBar } from "../components/ProgressBar";
 import { Graph, Item as GraphItem } from "../components/Graph";
 import {average, equallyDividedSlice} from "../utils/math";
 
+// 参考資料
+// https://developers.google.com/web/fundamentals/native-hardware/device-orientation?hl=ja
+
 type MeasurementValue = {
   orientationAlpha: number,
   orientationBeta: number,
