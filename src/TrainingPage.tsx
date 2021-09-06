@@ -163,7 +163,7 @@ export const TrainingPage = () => {
     <StyledMain>
       {state.status === 'waiting' ? (
         <button onClick={() => {
-          document.body.requestFullscreen();
+          // document.body.requestFullscreen();
           update(prev => ({...prev, status: 'doing'}))
         }}>
           スタート
