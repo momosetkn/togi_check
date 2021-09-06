@@ -2,7 +2,7 @@ import React, {useEffect, useMemo, useState} from 'react';
 import styled from "styled-components";
 import { ProgressBar } from "../components/ProgressBar";
 import { Graph, Item as GraphItem } from "../components/Graph";
-import {average, equallyDividedSlice} from "../utils/math";
+import {average, equallyDividedSlice, sum} from "../utils/math";
 
 // 参考資料
 // https://developers.google.com/web/fundamentals/native-hardware/device-orientation?hl=ja
@@ -263,20 +263,20 @@ const Result = ({angles}:{angles: Angle[]}) => {
   const wobbleValues = useMemo(() => {
     const getWobble = (items: number[]) => {
       const avg = average(items);
-      return items.map(x => Math.abs(x - avg));
-    }
+      return sum(items.map(x => Math.abs(x - avg)));
+    };
 
     return [
       {
-        title: 'alpha',
+        title: 'ヨー',
         data: getWobble(alphaAngles),
       },
       {
-        title: 'beta',
+        title: 'ピッチ',
         data: getWobble(betaAngles),
       },
       {
-        title: 'gamma',
+        title: 'ロール',
         data: getWobble(gammaAngles),
       },
     ];
