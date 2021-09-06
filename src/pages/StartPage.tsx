@@ -13,8 +13,14 @@ export const StartPage = () => {
   }, []);
 
   return (
-    <h1>
-      StartPage
-    </h1>
+    <>
+      <h1>
+        StartPage
+      </h1>
+      <ul>
+        <li onClick={() => history.push('/training')}>training</li>
+        <li onClick={() => history.push('/angle')}>angle</li>
+      </ul>
+    </>
   )
 }
