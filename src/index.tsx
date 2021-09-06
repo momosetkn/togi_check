@@ -25,7 +25,7 @@ ReactDOM.render(
           <TrainingPage />
         </Route>
         <Route path="/graph">
-          <Graph data={[1,2,3,2,3]} length={5} />
+          <Graph items={[{data: [1, 2, 3, 2, 3]}]} length={5} />
         </Route>
         <Route>
           <NotFoundPage />

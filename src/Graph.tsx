@@ -1,18 +1,25 @@
 import { Line, Serie } from '@nivo/line'
 
-export const Graph = ({data, length, dataTitle}: { data: number[], length: number, dataTitle?: string }) => {
-  const nivoData: Serie[] = [
+const colors = [
+  "rgb(241, 225, 91)",
+  "rgb(244, 117, 96)",
+  "rgb(97, 205, 187)"
+]
+
+export type Item = { data: number[], title?: string };
+
+export const Graph = ({items, length }: {items: Item[], length: number}) => {
+  const nivoData: Serie[] = items.map(({data, title}, index) => (
     {
-      id: dataTitle || 'データ',
-      color: "hsl(32, 70%, 50%)",
+      id: title || `データ${index}`,
+      color: colors[index % colors.length],
       data: [...Array(length)].map((_, i) => (
         {
           x: `${i}`,
           y: data[i] || 0
         }
       ))
-    }
-  ];
+    }));
 
   return (
     <Line

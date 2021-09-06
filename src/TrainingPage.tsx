@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import './App.css';
 import styled from "styled-components";
 import { ProgressBar } from "./ProgressBar";
+import {Graph, Item as GraphItem} from "./Graph";
 
 type MeasurementValue = {
   orientationAlpha: number,
@@ -22,6 +23,8 @@ type CalculateValue = {
   distance: number,
 }
 
+type Angle = { alpha: number, beta: number, gamma: number };
+
 export const TrainingPage = () => {
   const [measurementValue, setMeasurementValue] = useState<MeasurementValue>({
     orientationAlpha: 0,
@@ -40,6 +43,11 @@ export const TrainingPage = () => {
     speedY: 0,
     speedZ: 0,
     distance: 0,
+  });
+
+  const [state, update] = useState<{angles: Angle[], status: 'waiting' | 'doing' | 'finished'}>({
+    angles: [],
+    status: 'waiting'
   });
 
   useEffect(() => {
@@ -128,74 +136,160 @@ export const TrainingPage = () => {
     measurementValue.diffTime,
   ]);
 
-  const now = Math.min(calculateValue.distance/500_000, 100);
+  // max1000
+  const now = Math.min(calculateValue.distance/500_00, 1000);
 
   useEffect(() => {
-    if(now === 100){
+    let status = state.status;
+    if(now === 1000){
       navigator.vibrate(200);
+      status = 'finished'
     }
-  }, [now])
+    const angles = [...state.angles, {
+      alpha: measurementValue.orientationAlpha,
+      beta: measurementValue.orientationBeta,
+      gamma: measurementValue.orientationGamma,
+    }];
+    update(prev => (
+      {
+        ...prev,
+        status,
+        angles,
+      }));
+    // eslint-disable-next-line
+  }, [now]);
 
   return (
     <StyledMain>
-      <StyledAngleIndicator>
-        <span>{Math.abs(measurementValue.orientationGamma).toFixed(1)}度</span>
-      </StyledAngleIndicator>
-      <StyledProgressBarContainer>
-        <ProgressBar now={now} />
-      </StyledProgressBarContainer>
-      <table className="value-table">
-        <tr>
-          <td>orientationAlpha</td>
-          <td>{measurementValue.orientationAlpha.toFixed(1)}</td>
-        </tr>
-        <tr>
-          <td>orientationBeta</td>
-          <td>{measurementValue.orientationBeta.toFixed(1)}</td>
-        </tr>
-        <tr>
-          <td>orientationGamma</td>
-          <td>{measurementValue.orientationGamma.toFixed(1)}</td>
-        </tr>
-        <tr>
-          <td>accelerationX</td>
-          <td>{measurementValue.accelerationX.toFixed(1)}</td>
-        </tr>
-        <tr>
-          <td>accelerationY</td>
-          <td>{measurementValue.accelerationY.toFixed(1)}</td>
-        </tr>
-        <tr>
-          <td>accelerationZ</td>
-          <td>{measurementValue.accelerationZ.toFixed(1)}</td>
-        </tr>
-        <tr>
-          <td>measurementCount</td>
-          <td>{measurementValue.measurementCount}</td>
-        </tr>
-        <tr>
-          <td>speedX</td>
-          <td>{calculateValue.speedX}</td>
-        </tr>
-        <tr>
-          <td>speedY</td>
-          <td>{calculateValue.speedY}</td>
-        </tr>
-        <tr>
-          <td>speedZ</td>
-          <td>{calculateValue.speedZ}</td>
-        </tr>
-        <tr>
-          <td>distance</td>
-          <td>{(calculateValue.distance/1_000_000).toFixed(2)}</td>
-        </tr>
-        <tr>
-          <td>now</td>
-          <td>{now}</td>
-        </tr>
-      </table>
+      {state.status === 'waiting' ? (
+        <button onClick={() => {
+          document.body.requestFullscreen();
+          update(prev => ({...prev, status: 'doing'}))
+        }}>
+          スタート
+        </button>
+      ) : state.status === 'doing' ? (
+          <>
+            <StyledAngleIndicator>
+              <span>{Math.abs(measurementValue.orientationGamma).toFixed(1)}度</span>
+            </StyledAngleIndicator>
+            <StyledProgressBarContainer>
+              <ProgressBar now={now / 10}/>
+            </StyledProgressBarContainer>
+            <table className="value-table">
+              <tr>
+                <td>orientationAlpha</td>
+                <td>{measurementValue.orientationAlpha.toFixed(1)}</td>
+              </tr>
+              <tr>
+                <td>orientationBeta</td>
+                <td>{measurementValue.orientationBeta.toFixed(1)}</td>
+              </tr>
+              <tr>
+                <td>orientationGamma</td>
+                <td>{measurementValue.orientationGamma.toFixed(1)}</td>
+              </tr>
+              <tr>
+                <td>accelerationX</td>
+                <td>{measurementValue.accelerationX.toFixed(1)}</td>
+              </tr>
+              <tr>
+                <td>accelerationY</td>
+                <td>{measurementValue.accelerationY.toFixed(1)}</td>
+              </tr>
+              <tr>
+                <td>accelerationZ</td>
+                <td>{measurementValue.accelerationZ.toFixed(1)}</td>
+              </tr>
+              <tr>
+                <td>measurementCount</td>
+                <td>{measurementValue.measurementCount}</td>
+              </tr>
+              <tr>
+                <td>speedX</td>
+                <td>{calculateValue.speedX}</td>
+              </tr>
+              <tr>
+                <td>speedY</td>
+                <td>{calculateValue.speedY}</td>
+              </tr>
+              <tr>
+                <td>speedZ</td>
+                <td>{calculateValue.speedZ}</td>
+              </tr>
+              <tr>
+                <td>distance</td>
+                <td>{(calculateValue.distance / 1_000_000).toFixed(2)}</td>
+              </tr>
+              <tr>
+                <td>now</td>
+                <td>{now}</td>
+              </tr>
+            </table>
+          </>
+        ) :
+        <Result angles={state.angles} />
+      }
     </StyledMain>
   );
+}
+
+const Result = ({angles}:{angles: Angle[]}) => {
+  const alphaAngles = useMemo(() => angles.map(x => x.alpha), [angles]);
+  const betaAngles = useMemo(() => angles.map(x => x.beta), [angles]);
+  const gammaAngles = useMemo(() => angles.map(x => x.gamma), [angles]);
+
+  const graphItems: GraphItem[] = [
+    {
+      title: 'alpha',
+      data: alphaAngles,
+    },
+    {
+      title: 'beta',
+      data: betaAngles,
+    },
+    {
+      title: 'gamma',
+      data: gammaAngles,
+    },
+  ];
+
+  const wobbleValues = useMemo(() => {
+    const getWobble = (items: number[]) => {
+      const getAverage = (items: number[]) => items.reduce((a, b) => a + b) / items.length;
+      const average = getAverage(items);
+      return items.map(x => Math.abs(x - average)).reduce((a, b) => a + b);
+    }
+
+    return [
+      {
+        title: 'alpha',
+        data: getWobble(alphaAngles),
+      },
+      {
+        title: 'beta',
+        data: getWobble(betaAngles),
+      },
+      {
+        title: 'gamma',
+        data: getWobble(gammaAngles),
+      },
+    ];
+  }, [alphaAngles,
+    betaAngles,
+    gammaAngles]);
+
+  return (
+    <>
+      <Graph items={graphItems} length={1000} />
+      {wobbleValues.map(wobbleValue => (
+        <>
+          <div>{wobbleValue.title}</div>
+          <div>{wobbleValue.data}</div>
+        </>
+      ))}
+    </>
+  )
 }
 
 const StyledMain = styled.div`
