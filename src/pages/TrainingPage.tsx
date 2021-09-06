@@ -240,7 +240,8 @@ const Result = ({angles}:{angles: Angle[]}) => {
   const betaAngles = useMemo(() => angles.map(x => x.beta), [angles]);
   const gammaAngles = useMemo(() => angles.map(x => x.gamma), [angles]);
 
-  const sliceLength = 10;
+  const graphLength = 25;
+  const sliceLength = samplingMaxCount / graphLength;
   const graphItems: GraphItem[] = [
     {
       title: 'alpha',
@@ -282,7 +283,7 @@ const Result = ({angles}:{angles: Angle[]}) => {
 
   return (
     <>
-      <Graph items={graphItems} length={samplingMaxCount/sliceLength} />
+      <Graph items={graphItems} length={graphLength} />
       {wobbleValues.map(wobbleValue => (
         <>
           <div>{wobbleValue.title}</div>
