@@ -1,8 +1,7 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import './App.css';
 import styled from "styled-components";
-import { ProgressBar } from "./ProgressBar";
-import {Graph, Item as GraphItem} from "./Graph";
+import { ProgressBar } from "../components/ProgressBar";
+import { Graph, Item as GraphItem } from "../components/Graph";
 
 type MeasurementValue = {
   orientationAlpha: number,

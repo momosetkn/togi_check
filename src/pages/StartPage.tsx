@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import './App.css';
 import { useHistory } from 'react-router-dom';
 
 export const StartPage = () => {

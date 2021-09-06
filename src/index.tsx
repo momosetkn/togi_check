@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import { TrainingPage } from './TrainingPage';
-import { AnglePage } from "./AnglePage";
+import { TrainingPage } from './pages/TrainingPage';
+import { AnglePage } from "./pages/AnglePage";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
-import { NotFoundPage } from "./NotFoundPage";
+import { NotFoundPage } from "./pages/NotFoundPage";
 import reportWebVitals from './reportWebVitals';
-import { StartPage } from "./StartPage";
-import { Graph } from "./Graph";
+import { StartPage } from "./pages/StartPage";
+import { Graph } from "./components/Graph";
 
 const ROUTER_BASENAME = '/togi_check';
 
