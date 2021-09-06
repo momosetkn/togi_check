@@ -2,6 +2,7 @@ import React, {useEffect, useMemo, useState} from 'react';
 import styled from "styled-components";
 import { ProgressBar } from "../components/ProgressBar";
 import { Graph, Item as GraphItem } from "../components/Graph";
+import {average, equallyDividedSlice} from "../utils/math";
 
 type MeasurementValue = {
   orientationAlpha: number,
@@ -23,6 +24,8 @@ type CalculateValue = {
 }
 
 type Angle = { alpha: number, beta: number, gamma: number };
+
+const samplingMaxCount = 1000;
 
 export const TrainingPage = () => {
   const [measurementValue, setMeasurementValue] = useState<MeasurementValue>({
@@ -135,12 +138,11 @@ export const TrainingPage = () => {
     measurementValue.diffTime,
   ]);
 
-  // max1000
-  const now = Math.min(calculateValue.distance/500_00, 1000);
+  const now = Math.min(calculateValue.distance/500_00, samplingMaxCount);
 
   useEffect(() => {
     let status = state.status;
-    if(now === 1000){
+    if(now === samplingMaxCount){
       navigator.vibrate(200);
       status = 'finished'
     }
@@ -238,26 +240,26 @@ const Result = ({angles}:{angles: Angle[]}) => {
   const betaAngles = useMemo(() => angles.map(x => x.beta), [angles]);
   const gammaAngles = useMemo(() => angles.map(x => x.gamma), [angles]);
 
+  const sliceLength = 10;
   const graphItems: GraphItem[] = [
     {
       title: 'alpha',
-      data: alphaAngles,
+      data: equallyDividedSlice(alphaAngles, sliceLength).map(average),
     },
     {
       title: 'beta',
-      data: betaAngles,
+      data: equallyDividedSlice(betaAngles, sliceLength).map(average),
     },
     {
       title: 'gamma',
-      data: gammaAngles,
+      data: equallyDividedSlice(gammaAngles, sliceLength).map(average),
     },
   ];
 
   const wobbleValues = useMemo(() => {
     const getWobble = (items: number[]) => {
-      const getAverage = (items: number[]) => items.reduce((a, b) => a + b) / items.length;
-      const average = getAverage(items);
-      return items.map(x => Math.abs(x - average)).reduce((a, b) => a + b);
+      const avg = average(items);
+      return items.map(x => Math.abs(x - avg));
     }
 
     return [
@@ -280,7 +282,7 @@ const Result = ({angles}:{angles: Angle[]}) => {
 
   return (
     <>
-      <Graph items={graphItems} length={1000} />
+      <Graph items={graphItems} length={samplingMaxCount/sliceLength} />
       {wobbleValues.map(wobbleValue => (
         <>
           <div>{wobbleValue.title}</div>
